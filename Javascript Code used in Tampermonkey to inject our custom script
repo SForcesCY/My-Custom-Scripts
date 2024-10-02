@@ -1,0 +1,135 @@
+// ==UserScript==
+// @name         Fully Obfuscated Throttled API Requests | CON |
+// @namespace    http://tampermonkey.net/
+// @version      1.6
+// @description  Poll the main API every second for updates, queue them, and update the scoreboard API every 3 seconds.
+// @author       Michalis Georgiou
+// @match        *scoreboard-g4.xpromarkets.com/xpro-cy1-con=*
+// @grant        none
+// @run-at       document-end
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Obfuscate and split strings, then reassemble
+    function _concatParts(parts) {
+        return parts.join('');
+    }
+
+    const _0x1 = _concatParts(['','','','','']);
+    const _0x2 = _concatParts(['','','','','']);
+
+    const apiUrl = unescape(_0x1);
+    const scoreboardApiUrl = unescape(_0x2);
+
+    const _0x3 = 4 * 60 * 60 * 1000;
+    const _0x4 = 5000;
+    const _0x5 = 10000;
+
+    let _0x6 = null;
+    let _0x7 = [];
+    let _0x8 = false;
+    let _0x9 = 0;
+    const _0xA = 3000;
+
+    function _nestedB() {
+        return function() {
+            const _0xC = Date.now();
+            if (_0xC - _0x9 < _0xA) return;
+            _0x9 = _0xC;
+
+            fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            })
+            .then(_0xD => _0xD.json())
+            .then(_0xE => {
+                if (JSON.stringify(_0xE) !== JSON.stringify(_0x6)) {
+                    _0x7.push(_0xE);
+                    _0x6 = _0xE;
+                    if (!_0x8) {
+                        _nestedF()();
+                    }
+                }
+            })
+            .catch(_0xG => {});
+        };
+    }
+
+    function _nestedF() {
+        return function() {
+            if (_0x7.length === 0) {
+                _0x8 = false;
+                return;
+            }
+            _0x8 = true;
+            _0x7.shift();
+            setTimeout(_nestedF(), 5000);
+        };
+    }
+
+    setTimeout(() => {
+        window.location.reload();
+    }, _0x3);
+
+    // Obfuscate and split the element name
+    const elementName = _concatParts(['FTD', 's Day']);
+
+    function _clickThElement() {
+        const _0xJ = Array.from(document.querySelectorAll('th[role="columnheader"][style*="position: sticky; top: 0px; cursor: pointer;"]'));
+        if (_0xJ.length > 0) {
+            const _0xK = _0xJ.find(_0xL => {
+                const _0xM = _0xL.querySelector('span');
+                if (_0xM) {
+                    const _0xN = _0xM.innerHTML.replace('<br>', ' ').replace(/\s+/g, ' ').trim();
+                    return _0xN.includes(elementName);
+                }
+                return false;
+            });
+
+            if (_0xK) {
+                _0xK.click();
+            }
+        }
+    }
+
+    function _clickButtonElement() {
+        const _0xP = Array.from(document.querySelectorAll('div.footer_button_wrap button.footer_button'));
+        if (_0xP.length > 0) {
+            const _0xQ = _0xP.find(_0xR => {
+                const _0xS = _0xR.closest('div.footer_button_wrap');
+                return _0xS && _0xS.textContent.includes('dep');
+            });
+
+            if (_0xQ) {
+                _0xQ.click();
+            }
+        }
+    }
+
+    function _performClicks() {
+        setTimeout(_clickButtonElement, 100);
+    }
+
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            _performClicks();
+        }, _0x4);
+    });
+
+    function _startApiRequests() {
+        setInterval(_nestedB(), 1000);
+        setInterval(_nestedF(), 3000);
+    }
+
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            _clickThElement();
+            setTimeout(_startApiRequests, _0x5);
+        }, _0x4);
+    });
+
+})();
