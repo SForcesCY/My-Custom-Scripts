@@ -4,7 +4,7 @@
 // @version      1.6
 // @description  Poll the main API every second for updates, queue them, and update the scoreboard API every 3 seconds.
 // @author       Michalis Georgiou
-// @match        *scoreboard-g4.xpromarkets.com/xpro-cy1-con=*
+// @match        
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
