@@ -3,7 +3,7 @@
 // @namespace    https://github.com/SForcesCY
 // @version      1.6
 // @description  Poll the main API every second for updates, queue them and update the scoreboard API every 3 seconds.
-// @author       SForces
+// @author       Michalis
 // @match        
 // @grant        none
 // @run-at       document-end
