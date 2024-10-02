@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Fully Obfuscated Throttled API Requests | CON |
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/SForcesCY
 // @version      1.6
-// @description  Poll the main API every second for updates, queue them, and update the scoreboard API every 3 seconds.
-// @author       Michalis Georgiou
+// @description  Poll the main API every second for updates, queue them and update the scoreboard API every 3 seconds.
+// @author       SForces
 // @match        
 // @grant        none
 // @run-at       document-end
