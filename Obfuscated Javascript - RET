@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Throttled API Requests with Two APIs and Auto Refresh every x time -Retention OBF
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/SForcesCY/
 // @version      1.6
 // @description  Poll the APIs every x seconds for updates, queue them, and update the scoreboard every every x seconds, sort it based on day and automatically display last deposit.
 // @author       Michalis Georgiou
