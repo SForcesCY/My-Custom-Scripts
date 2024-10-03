@@ -1,0 +1,144 @@
+// ==UserScript==
+// @name         Throttled API Requests with Two APIs and Auto Refresh every x time -Retention OBF
+// @namespace    http://tampermonkey.net/
+// @version      1.6
+// @description  Poll the APIs every x seconds for updates, queue them, and update the scoreboard every every x seconds, sort it based on day and automatically display last deposit.
+// @author       Michalis Georgiou
+// @match        **
+// @grant        none
+// @run-at       document-end
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    function _sKr3(parts) {
+        return parts.join('');
+    }
+
+    console.log('Tampermonkey script is up and running!');
+
+    const _Uxl7 = '';
+    const _qWp4 = '';
+    const _lRt8 = '';
+    const _Zvu2 = '';
+    const _gIk1 = '';
+
+    const _mainUrl = unescape(_sKr3([_Uxl7, _qWp4, _lRt8, _Zvu2, _gIk1]));
+
+    const _yHn5 = '';
+    const _uGt9 = '';
+    const _bRq2 = '';
+    const _xTf3 = '';
+    const _vOq7 = '';
+
+    const _scoreUrl = unescape(_sKr3([_yHn5, _uGt9, _bRq2, _xTf3, _vOq7]));
+
+    const _tBx6 = 1 * 30 * 60 * 1000;
+    const _vKm1 = 5000;
+    const _nZv3 = 5000;
+
+    let _mJa4 = null;
+    let _lHf8 = [];
+    let _pKd6 = false;
+    let _gIx2 = 0;
+    const _xNj7 = 3000;
+
+    const _Ghy4 = (function() {
+        return function() {
+            const _vTw9 = Date.now();
+            if (_vTw9 - _gIx2 < _xNj7) return;
+            _gIx2 = _vTw9;
+
+            fetch(_mainUrl, { method: 'GET', headers: { 'Cache-Control': 'no-cache' } })
+            .then(_zJx5 => _zJx5.json())
+            .then(_aOl2 => {
+                if (JSON.stringify(_aOl2) !== JSON.stringify(_mJa4)) {
+                    _lHf8.push(_aOl2);
+                    _mJa4 = _aOl2;
+                    if (!_pKd6) _lVu8();
+                }
+            })
+            .catch(_iPn1 => {});
+        };
+    })();
+
+    const _Jft3 = (function() {
+        return function() {
+            fetch(_scoreUrl, { method: 'GET', headers: { 'Cache-Control': 'no-cache' } })
+            .then(_zJx5 => _zJx5.json())
+            .then(_aOl2 => {})
+            .catch(_iPn1 => {});
+        };
+    })();
+
+    const _lVu8 = (function() {
+        return function() {
+            if (_lHf8.length === 0) {
+                _pKd6 = false;
+                return;
+            }
+            _pKd6 = true;
+            _lHf8.shift();
+            setTimeout(_lVu8, 4000);
+        };
+    })();
+
+    setTimeout(() => { window.location.reload(); }, _tBx6);
+
+    const _Dyu1 = (function() {
+        return function() {
+            const _dUz5 = Array.from(document.querySelectorAll('th[role="columnheader"][style*="position: sticky; top: 0px; cursor: pointer;"]'));
+            if (_dUz5.length > 0) {
+                const _fZo3 = _dUz5.find(_cLo2 => {
+                    const _hXq9 = _cLo2.querySelector('span');
+                    if (_hXq9) {
+                        const _nEp4 = _hXq9.innerHTML.replace('<br>', ' ').replace(/\s+/g, ' ').trim();
+                        return _nEp4.includes('Day');
+                    }
+                    return false;
+                });
+                if (_fZo3) _fZo3.click();
+            }
+        };
+    })();
+
+    const _Krg2 = (function() {
+        return function() {
+            const _kJp4 = Array.from(document.querySelectorAll('div.footer_button_wrap button.footer_button'));
+            if (_kJp4.length > 0) {
+                const _pNh7 = _kJp4.find(_oHl6 => {
+                    const _qWs5 = _oHl6.closest('div.footer_button_wrap');
+                    return _qWs5 && _qWs5.textContent.includes('dep');
+                });
+                if (_pNh7) _pNh7.click();
+            }
+        };
+    })();
+
+    const _vLb3 = (function() {
+        return function() {
+            setTimeout(_Krg2, 100);
+        };
+    })();
+
+    window.addEventListener('load', function() {
+        setTimeout(() => { _vLb3(); }, _vKm1);
+    });
+
+    const _rTk9 = (function() {
+        return function() {
+            setInterval(_Ghy4, 1000);
+            setInterval(_Jft3, 3000);
+        };
+    })();
+
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            _Dyu1();
+            setTimeout(_rTk9, _nZv3);
+            setTimeout(_Krg2, 6000);
+        }, _vKm1);
+    });
+
+})();
